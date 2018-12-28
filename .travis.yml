@@ -39,6 +39,7 @@ jobs:
     - stage: deploy
       language: java
       script:
+        - chmod +x gradlew
         - echo "Downloading allocations server $RELEASE_TAG"
         - wget -P applications/allocations-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/allocations-server.jar
       before_deploy:
@@ -54,6 +55,7 @@ jobs:
     - stage: deploy
       language: bash
       script:
+        - chmod +x gradlew
         - echo "Downloading backlog server $RELEASE_TAG"
         - wget -P applications/backlog-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/backlog-server.jar
       before_deploy:
@@ -64,6 +66,7 @@ jobs:
     - stage: deploy
       language: bash
       script:
+        - chmod +x gradlew
         - echo "Downloading registration server $RELEASE_TAG"
         - wget -P applications/registration-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/registration-server.jar
       before_deploy:
@@ -74,6 +77,7 @@ jobs:
     - stage: deploy
       language: bash
       script:
+        - chmod +x gradlew
         - echo "Downloading timesheets server $RELEASE_TAG"
         - wget -P applications/timesheets-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/timesheets-server.jar
       before_deploy:
@@ -90,5 +94,6 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install cf-cli
       script:
+        - chmod +x gradlew
         - cf login -a $CF_API_URL -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s review
         - ./gradlew cfMigrate
