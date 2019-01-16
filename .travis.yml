@@ -20,6 +20,7 @@ jobs:
       install: skip
       before_script:
         - chmod +x gradlew
+        - chmod +x gradle/wrapper/gradle-wrapper.jar
         - mysql -uroot < databases/create_databases.sql
         - ./gradlew testMigrate
       script: ./gradlew clean build
@@ -41,6 +42,7 @@ jobs:
       language: java
       before_script:
         - chmod +x gradlew
+        - chmod +x gradle/wrapper/gradle-wrapper.jar
       script:
         - echo "Downloading allocations server $RELEASE_TAG"
         - wget -P applications/allocations-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/allocations-server.jar
@@ -58,11 +60,11 @@ jobs:
       language: bash
       before_script:
         - chmod +x gradlew
+        - chmod +x gradle/wrapper/gradle-wrapper.jar
       script:
         - echo "Downloading backlog server $RELEASE_TAG"
         - wget -P applications/backlog-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/backlog-server.jar
       before_deploy:
-        - chmod +x gradlew
         - cp manifest-backlog.yml manifest.yml
         - echo "Deploying backlog server $RELEASE_TAG"
       deploy:
@@ -71,11 +73,11 @@ jobs:
       language: bash
       before_script:
         - chmod +x gradlew
+        - chmod +x gradle/wrapper/gradle-wrapper.jar
       script:
         - echo "Downloading registration server $RELEASE_TAG"
         - wget -P applications/registration-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/registration-server.jar
       before_deploy:
-        - chmod +x gradlew
         - cp manifest-registration.yml manifest.yml
         - echo "Deploying registration server $RELEASE_TAG"
       deploy:
@@ -84,6 +86,7 @@ jobs:
       language: bash
       before_script:
         - chmod +x gradlew
+        - chmod +x gradle/wrapper/gradle-wrapper.jar
       script:
         - echo "Downloading timesheets server $RELEASE_TAG"
         - wget -P applications/timesheets-server/build/libs https://github.com/$GITHUB_USERNAME/pal-tracker-distributed/releases/download/$RELEASE_TAG/timesheets-server.jar
@@ -97,12 +100,11 @@ jobs:
       language: java
       before_install:
         - chmod +x gradlew
+        - chmod +x gradle/wrapper/gradle-wrapper.jar
         - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
         - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
         - sudo apt-get update
         - sudo apt-get install cf-cli
-      before_script:
-        - chmod +x gradlew
       script:
         - cf login -a $CF_API_URL -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s review
         - ./gradlew cfMigrate
