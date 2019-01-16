@@ -25,8 +25,6 @@ jobs:
         - ./gradlew testMigrate
       script: ./gradlew clean build
       before_deploy:
-        - chmod +x gradlew
-        - chmod +x gradle/wrapper/gradle-wrapper.jar
         - git config --local user.name "Travis CI"
         - git config --local user.email "travis@example.com"
         - git tag -f $RELEASE_TAG
@@ -59,6 +57,7 @@ jobs:
         password: $CF_PASSWORD
         organization: $CF_ORG
         space: review
+      skip_cleanup: true
     - stage: deploy
       language: bash
       script:
@@ -71,6 +70,7 @@ jobs:
         - echo "Deploying backlog server $RELEASE_TAG"
       deploy:
         <<: *cloudfoundry
+      skip_cleanup: true
     - stage: deploy
       language: bash
       script:
@@ -83,6 +83,7 @@ jobs:
         - echo "Deploying registration server $RELEASE_TAG"
       deploy:
         <<: *cloudfoundry
+      skip_cleanup: true
     - stage: deploy
       language: bash
       script:
@@ -95,6 +96,7 @@ jobs:
         - echo "Deploying timesheets server $RELEASE_TAG"
       deploy:
         <<: *cloudfoundry
+      skip_cleanup: true
     - stage: migrate
       language: java
       before_install:
